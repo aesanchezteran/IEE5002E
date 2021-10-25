@@ -1,5 +1,5 @@
 /*
- * BtnLedCounterInterruptcode.c
+ * BtnLedCounterInterrupt.c
  *
  *  Created on: 	23 June 2020
  *      Author: 	Alberto Sánchez
