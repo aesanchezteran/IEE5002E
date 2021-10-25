@@ -5,6 +5,14 @@
  *      Author: 	Alberto Sánchez
  *     Version:		1.0
  *     Recycled from Zynq Book tutorial 2
+ *
+ *  Device: Zynq 7000 in Zybo, Zybo Z7-10 or Zybo Z7-20 (use Board Files from Digilent)
+ * 
+ *  Descripction: This system implements a XGpio interrupt on the button and increments
+ *  a count (led_data) which is displayed in the leds. 
+ *
+ *  Buttons on channel 2 and Led on Channel 1 of the GPIO.
+ *
  */
 
 
