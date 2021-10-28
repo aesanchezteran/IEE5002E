@@ -131,8 +131,8 @@ int main (void)
   //infinite loop waiting for interruption
   while(1)
   {
-	  status = XGpio_InterruptGetStatus(&BtnLedInst);
-	  status = XGpio_InterruptGetEnabled(&BtnLedInst);
+	  status = XGpio_InterruptGetStatus(&BtnLedInst); // Check which channel channel has asserted an interruption
+	  status = XGpio_InterruptGetEnabled(&BtnLedInst); //Check which channel has interruptions enabled
   }
 
   return 0;
@@ -161,6 +161,7 @@ int IntcInitFunction(u16 DeviceId, XGpio *GpioInstancePtr)
 						  	  	 (void *)GpioInstancePtr);
 	if(status != XST_SUCCESS) return XST_FAILURE;
 
+	// Enable GIC
 	XScuGic_Enable(&INTCInst, INTC_GPIO_INTERRUPT_ID);
 
 	// Enable GPIO interrupts in the button channel.
