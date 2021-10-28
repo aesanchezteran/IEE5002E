@@ -1,15 +1,15 @@
 /*
  * BtnLedCounterInterrupt.c
  *
- *  Created on: 	23 June 2020
+ *  Created on: 	28 October 2021
  *      Author: 	Alberto Sánchez
  *     Version:		1.0
  *     Recycled from Zynq Book tutorial 2
  *
  *  Device: Zynq 7000 in Zybo, Zybo Z7-10 or Zybo Z7-20 (use Board Files from Digilent)
- * 
+ *
  *  Descripction: This system implements a XGpio interrupt on the button and increments
- *  a count (led_data) which is displayed in the leds. 
+ *  a count (led_data) which is displayed in the leds.
  *
  *  Buttons on channel 2 and Led on Channel 1 of the GPIO.
  *
@@ -129,7 +129,11 @@ int main (void)
   if(status != XST_SUCCESS) return XST_FAILURE;
 
   //infinite loop waiting for interruption
-  while(1);
+  while(1)
+  {
+	  status = XGpio_InterruptGetStatus(&BtnLedInst);
+	  status = XGpio_InterruptGetEnabled(&BtnLedInst);
+  }
 
   return 0;
 }
@@ -146,32 +150,37 @@ int IntcInitFunction(u16 DeviceId, XGpio *GpioInstancePtr)
 
 	// Interrupt controller initialisation and success check
 	IntcConfig = XScuGic_LookupConfig(DeviceId);
+
 	status = XScuGic_CfgInitialize(&INTCInst, IntcConfig, IntcConfig->CpuBaseAddress);
 	if(status != XST_SUCCESS) return XST_FAILURE;
 
-
-	// Enable Exception handlers
-	Xil_ExceptionRegisterHandler(XIL_EXCEPTION_ID_INT,
-			 	 	 	 	 	 (Xil_ExceptionHandler)XScuGic_InterruptHandler,
-								 &INTCInst);
-	Xil_ExceptionEnable();
-
-
 	// Connect GPIO interrupt to handler and check for success
 	status = XScuGic_Connect(&INTCInst,
-					  	  	 INTC_GPIO_INTERRUPT_ID,
-					  	  	 (Xil_ExceptionHandler)BTN_Intr_Handler,
-					  	  	 (void *)GpioInstancePtr);
+						  	  	 INTC_GPIO_INTERRUPT_ID,
+						  	  	 (Xil_ExceptionHandler)BTN_Intr_Handler,
+						  	  	 (void *)GpioInstancePtr);
 	if(status != XST_SUCCESS) return XST_FAILURE;
 
+	XScuGic_Enable(&INTCInst, INTC_GPIO_INTERRUPT_ID);
 
-	// Enable GPIO interrupts
-	XGpio_InterruptEnable(GpioInstancePtr, 1);
+	// Enable GPIO interrupts in the button channel.
+	XGpio_InterruptEnable(GpioInstancePtr, BTN_CHANNEL);
 	XGpio_InterruptGlobalEnable(GpioInstancePtr);
 
 
-	// Enable GIC
-	XScuGic_Enable(&INTCInst, INTC_GPIO_INTERRUPT_ID);
+	/*
+	 * Initialize the exception table and register the interrupt
+	 * controller handler with the exception table
+	 */
+	Xil_ExceptionInit();
+
+	Xil_ExceptionRegisterHandler(XIL_EXCEPTION_ID_INT,
+			 	 	 	 	 	 (Xil_ExceptionHandler)XScuGic_InterruptHandler,
+								 &INTCInst);
+
+	/* Enable non-critical exceptions */
+	Xil_ExceptionEnable();
+
 
 	return XST_SUCCESS;
 }
