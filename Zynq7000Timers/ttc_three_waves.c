@@ -5,7 +5,7 @@
 * This file contains a design example using the Triple Timer Counter hardware
 * and driver in  polled mode.
 *
-* The example generates a square wave output on the waveform out pin.
+* The example generates PWM signals in three pins connecting the PS through the EMIO.
 *
 * Author: Alberto Sanchez, PhD
 *

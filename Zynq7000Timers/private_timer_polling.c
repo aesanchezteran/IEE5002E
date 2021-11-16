@@ -1,3 +1,28 @@
+/*
+ * private_timer_polling.c
+ *
+ *  Created on: 	13 Apr 2021
+ *      Author: 	Alberto Sanchez
+ *     Version:		1.0
+ */
+
+/********************************************************************************************
+* VERSION HISTORY
+********************************************************************************************
+*	v1.0 - 17 June 2020
+*
+*******************************************************************************************/
+
+/********************************************************************************************
+ *
+ * This program will flip the leds
+ *
+ * This file contains an example of using the GPIO driver to provide communication between
+ * the Zynq Processing System (PS) and the AXI GPIO block implemented in the Zynq Programmable
+ * Logic (PL). The AXI GPIO is connected to the LEDs (CH1) on the Zybo.
+ *
+ ********************************************************************************************/
+
 /* Include Files */
 #include "xparameters.h"
 #include "xgpio.h"
@@ -50,6 +75,26 @@ XScuTimer myTimer;									/* Timer Device driver instance */
 XScuTimer_Config *ConfigPtr;					//Pointer for configuration
 XScuTimer *TimerInstancePtr = &myTimer;			// Pointer to timer device
 
+
+int LEDOutputExample(void);
+
+/* Main Function */
+
+/* Main function. */
+int main(void){
+
+	int Status;
+
+	/* Execute the LED output. */
+	Status = LEDOutputExample();
+	if (Status != XST_SUCCESS) {
+		xil_printf("GPIO output to the LEDs failed!\r\n");
+	}
+
+	return 0;
+}
+
+/* Function implementations */
 int LEDOutputExample(void)
 {
 	volatile u32 CntValue = 0;   /* Timer Counter Value */
@@ -128,19 +173,5 @@ int LEDOutputExample(void)
 			}
 
 		return XST_SUCCESS; /* Should be unreachable */
-}
-
-/* Main function. */
-int main(void){
-
-	int Status;
-
-	/* Execute the LED output. */
-	Status = LEDOutputExample();
-	if (Status != XST_SUCCESS) {
-		xil_printf("GPIO output to the LEDs failed!\r\n");
-	}
-
-	return 0;
 }
 
