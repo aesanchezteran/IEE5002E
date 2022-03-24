@@ -6,38 +6,70 @@
  *     Version:		1.0
  */
 
-/********************************************************************************************
-* VERSION HISTORY
-********************************************************************************************
-
+/************************************************************** 
+*
+*    SECTION: VERSION HISTORY
+*
+***************************************************************
+*
 *	v1.0 - 23 March 2021
 *		First version created, modified from Zynq Book tutorial
-*******************************************************************************************/
+*
+***************************************************************/
 
-/********************************************************************************************
- * This file contains an example of using the GPIO driver to provide control a keypad in JE Pmod
- * in the Zybo Z7-20 Board. The system connects to the keypad by using AXI GPIO.
- * The AXI GPIO is connected to the LEDs (CH1) and Keypad in (CH2) on the Zybo.
- *
- * The provided code scans the keypad and shows the binary value in the leds
- ********************************************************************************************/
+/************************************************************** 
+*
+*    SECTION: DESCRIPTION
+*
+***************************************************************
+*
+* This file contains an example of using the GPIO driver to 
+* provide control a keypad in JE Pmod in the Zybo Z7-20 Board.
+* The system connects to the keypad by using AXI GPIO.
+* The AXI GPIO is connected to the LEDs (CH1) and Keypad in 
+* (CH2) on the Zybo.
+*
+* The provided code scans the keypad and shows the binary value 
+* in the leds
+*
+**************************************************************/
 
-/* Include Files */
+/************************************************************** 
+*
+*    SECTION: LIBRARIES
+*
+***************************************************************/
 #include "xparameters.h"
 #include "xgpio.h"
 #include "xstatus.h"
 #include "xil_printf.h"
 
-/* Definitions */
+/************************************************************** 
+*
+*    SECTION: DEFINITIONS
+*
+***************************************************************/
 #define GPIO_DEVICE_ID  XPAR_AXI_GPIO_0_DEVICE_ID	/* GPIO device that LEDs are connected to */
-#define LED_CHANNEL 1								/* GPIO port 1 for LEDs */
-#define KEYPAD_CHANNEL 2								/* GPIO port 2 for KEYPAD */
-#define printf xil_printf							/* smaller, optimised printf */
+#define LED_CHANNEL 1					/* GPIO port 1 for LEDs */
+#define KEYPAD_CHANNEL 2				/* GPIO port 2 for KEYPAD */
+#define printf xil_printf				/* smaller, optimised printf */
 
-XGpio Gpio;											/* GPIO Device driver instance */
+/************************************************************** 
+*
+*    SECTION: DEVICE INSTANCES
+*
+***************************************************************/
+XGpio Gpio;		/* GPIO Device driver instance */
+
+/************************************************************** 
+*
+*     SECTION: FUNCTION PROTOTYPES
+*
+***************************************************************/
 
 int KEYPDLEDOutputExample(void);
 void Delay(void);
+
 
 /* Main function. */
 int main(void){
@@ -51,6 +83,12 @@ int main(void){
 
 	return 0;
 }
+
+/**************************************************************
+*
+* SECTION: PROTOTYPE FUNCTION IMPLEMENTATIONS
+*
+**************************************************************/
 
 int KEYPDLEDOutputExample(void){
 	int Status;
@@ -174,6 +212,7 @@ int KEYPDLEDOutputExample(void){
 				}
 				}
 			}
+
 
 void Delay(void){
 	int counter = 50000;
