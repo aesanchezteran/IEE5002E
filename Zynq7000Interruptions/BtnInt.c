@@ -86,7 +86,7 @@ int main(void){
 	int Status;
 
 	/* Initialise Gpio */
-	Status = GpioInitfunction(GPIO_DEVICE_ID,&Gpio);
+	Status = GpioInitFunction(GPIO_DEVICE_ID,&Gpio);
 	if (Status != XST_SUCCESS) {
 		xil_printf("Failed to initialise Gpio\r\n");
 	} else{
@@ -94,7 +94,7 @@ int main(void){
 	}
 
 	/* Initialise Interrupt Controller */
-	Status = IntcInitFunction(INTC_DEVICE_ID,&INTCInst);
+	Status = IntcInitFunction(INTC_DEVICE_ID,&Gpio);
 	if (Status != XST_SUCCESS) {
 		xil_printf("Failed to initialize Interrupt Controller\r\n");
 	} else{
